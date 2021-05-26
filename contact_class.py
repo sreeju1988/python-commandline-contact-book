@@ -65,7 +65,7 @@ class contactClass:
         if checkContact[0]:
             confirm = input(""" 
                 Are you sure want to delete this contact ?
-                
+
                     1 ==> Yes
                     2 ==> No
                     Input: """)
@@ -89,16 +89,3 @@ class contactClass:
                 self.askPhone()
             elif(input == 'Email'):
                 self.askEmail()
-
-    # ask name
-
-    def askName(self):
-        return input('Enter name: ')
-
-    # ask Phone
-    def askPhone(self):
-        return input('Enter phone: ')
-
-    # ask Email
-    def askEmail(self):
-        return input('Enter email id: ')
