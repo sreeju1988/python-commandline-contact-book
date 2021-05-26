@@ -1,55 +1,67 @@
+# import contact class
 from contact_class import *
-# Define a function to welcome the user and provide options on how the phonebook works
 
-
-def firstScreen():
-    # Create an entry variable using the input function and multiple line strings format
-    userInput = int(input("""
-    1) Add contact
-    2) List contacts(display all items)
-    3) Remove contact(delete by phone no)
-    4) Quit
-    Input: """))
-
-# Close the function
-    return userInput
-
-# Define a function Phonebook
+contact = contactClass()
 
 
 def contactBook():
-    # initiate an empty contact dictionary to store values
+    # An empty contactList to store contact
     contactList = []
-    contactList.append(['s', '9', '9'])
-  # initiate a while loop to continuously run the phonebook program
+
     while True:
-        # call welcome function.
-        # Set entry variable to welcome function
-        userInput = firstScreen()
 
-        # Create conditions for  decision making for any option entered by the user
+        userInput = contact.firstScreen()
+
         if userInput == 1:
+            while True:
+                name = input('Enter name: ')
+                # check for name not empty
+                if len(name) != 0:
+                    break
+                else:
+                    contact.showMsg('Name required')
+            while True:
+                phone_number = input('Enter phone: ')
+                phoneCount = len(phone_number)
 
-            name = input('Enter name: ')
-            phone_number = input('Enter phone: ')
-            email = input('Enter email id: ')
-            addContact(contactList, name, phone_number, email)
+                # check for phone not empty
+                if phoneCount == 0:
+                    contact.showMsg('Phone required')
+                else:
+                    checkPhone = contact.searchPhone(contactList, phone_number)
+                    # check for phone number already exist / not
+                    if checkPhone[0]:
+                        contact.showMsg('This phone number already exist')
+                    if checkPhone[0] == False:
+                        break
+
+            while True:
+                email = input('Enter email: ')
+                emailCount = len(email)
+                # check for email not empty
+                if emailCount == 0:
+                    contact.showMsg('Email required')
+                else:
+                    checkEmail = contact.searchEmail(contactList, email)
+                    # check for email already exist / not
+                    if checkEmail[0] == False:
+                        break
+            # add entries to contact array
+            contact.addContact(contactList, name, phone_number, email)
 
         elif userInput == 2:
-            showContact(contactList)
+            contact.showContact(contactList)
         elif userInput == 3:
             phone_number = input('Enter the phone number you wish to delete: ')
-            deleteContact(contactList, phone_number)
-            # for x in contactList:
-            #     if x[1] == phone_nuber:
-            #         position = contactList.index(x)
-            #         del contactList[position]
-            #         print("contact deleted successfully")
-            #     else:
-            #         print('contact not found ==>', phone_nuber)
+            # delete selected contact form array
+            contact.deleteContact(contactList, phone_number)
+
         elif userInput == 4:
-            showMsg('Thanks for using contact book!')
+            contact.showMsg('Thanks for using contact book!')
+
             break
+        else:
+            contact.showMsg('Invalid entry, Please try agin')
 
 
 contactBook()

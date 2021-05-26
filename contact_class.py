@@ -1,60 +1,104 @@
-# show contact list
+class contactClass:
 
-def showContact(contactList):
+    # show message
+    def showMsg(self, message):
+        print(' ')
+        print('-------------------------------------')
 
-    if len(contactList) == 0:
-        showMsg('###### Contact list empty ######')
+        print(message)
 
-    else:
-        showMsg('My contact list')
-        for contact in contactList:
-            print(contact[0], "||", contact[1], '||', contact[2])
-            print('------------------------------------------------')
+        print('-------------------------------------')
 
+    # intro screen
+    def firstScreen(self):
+        # welcome msg and input
+        userInput = int(input("""
+        1) Add contact
+        2) List contacts(display all items)
+        3) Remove contact(delete by phone no)
+        4) Quit
+        Input: """))
 
-# Add new contact
+        return userInput
 
+    # show contact list
 
-def addContact(contactList, name, phone_number, email):
-    checkContact = searchContact(contactList, phone_number, email)
-    if(checkContact[0]):
-        showMsg('This phone number / email address already exist in our contact')
-    else:
+    def showContact(self, contactList):
+        if len(contactList) == 0:
+            self.showMsg('###### Contact list empty ######')
+
+        else:
+            self.showMsg('My contact list')
+            for contact in contactList:
+                print(contact[0], "||", contact[1], '||', contact[2])
+                print('------------------------------------------------')
+
+    # Add new contact
+
+    def addContact(self, contactList, name, phone_number, email):
         contactList.append([name, phone_number, email])
 
+    # search in contact list
 
-# search in contact list
+    def searchPhone(self, contactList, phone_number):
 
+        for x in contactList:
+            if len(phone_number) != '':
+                if x[1] == phone_number:
+                    return [True, contactList.index(x)]
+                    break
 
-def searchContact(contactList, phone_number, email=''):
+        return [False]
 
-    for x in contactList:
-        if len(phone_number) != '':
-            if x[1] == phone_number:
-                return [True, contactList.index(x)]
+    def searchEmail(self, contactList, email):
+        for x in contactList:
+            if len(email) != 0:
+                if x[2] == email:
+                    return [True, contactList.index(x)]
                 break
-        if len(email) != 0:
-            if x[2] == email:
-                return [True, contactList.index(x)]
-                break
-    return [False]
+        return [False]
 
-# delete contact
+    # delete contact
 
+    def deleteContact(self, contactList, phone_number):
+        checkContact = self.searchPhone(contactList, phone_number)
+        if checkContact[0]:
+            confirm = input(""" 
+                Are you sure want to delete this contact ?
+                
+                    1 ==> Yes
+                    2 ==> No
+                    Input: """)
 
-def deleteContact(contactList, phone_number):
-    checkContact = searchContact(contactList, phone_number)
-    if checkContact[0]:
-        showMsg('Contact not found')
-    else:
-        showMsg('contact not found ==> '+phone_number)
+            if confirm == '1':
+                del contactList[checkContact[1]]
+                self.showMsg('Contact deleted sucessfully')
+            else:
+                self.showMsg('Your request cancelled !')
 
+        else:
+            self.showMsg('contact not found ==> '+phone_number)
 
-# show message
+    # validate
+    def validateInput(self, contactList, input, value):
+        if len(value) == 0:
+            self.showMsg(input + ' requied')
+            if(input == 'Name'):
+                self.askName()
+            elif(input == 'Phone'):
+                self.askPhone()
+            elif(input == 'Email'):
+                self.askEmail()
 
-def showMsg(message):
-    print('-------------------------------------')
+    # ask name
 
-    print(message)
+    def askName(self):
+        return input('Enter name: ')
 
-    print('-------------------------------------')
+    # ask Phone
+    def askPhone(self):
+        return input('Enter phone: ')
+
+    # ask Email
+    def askEmail(self):
+        return input('Enter email id: ')
